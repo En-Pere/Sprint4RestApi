@@ -1,6 +1,14 @@
 //utilizamos multer para poder permitir la subida de archivos al servidor.
 const multer = require('multer');
 
+const reqUser = (req,res) => {
+	res.json({
+		nom: 'pere',
+		edat: '37',
+		urlpeticio: 'http://localhost:8000/user'
+	})
+};
+
 //creamos la variable upload, con multer para definir dónde guardaremos las imagenes y filtramos x tipo de imagen
 const upload = multer({
   dest: './imagenes',
@@ -13,4 +21,4 @@ const upload = multer({
   }
 }).single('subir_archivo');
 
-module.exports = upload;
+module.exports = {upload, reqUser};
