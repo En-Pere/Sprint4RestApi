@@ -7,13 +7,20 @@ var corOptions = {
   origin: 'http://localhost:8081'
 }
 
-//MIDDLEWARES
 
+//MIDDLEWARES
 app.use(cors(corOptions));
 
 app.use(express.json());
 
 app.use(express.urlencoded({extended: true}));
+
+
+//ROUTERS
+
+const router = require('./routes/productRoutes');
+app.use('/api/products', router);
+
 
 //TESTING API
 
@@ -23,7 +30,7 @@ app.get('/',(req, res) => {
 
 //PORT 
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3306
 
 //SERVER
 
