@@ -1,39 +1,40 @@
-const express = require ('express');
-const cors = require ('cors');
-
+const express = require("express");
+const cors = require("cors");
 const app = express();
 
-var corOptions = {
-  origin: 'http://localhost:3306'
+var corsOptions = {
+  origin: 'http://localhost:8080',
+  optionsSuccessStatus: 200
 }
 
-
-//MIDDLEWARES
-app.use(cors(corOptions));
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
+
+const db = require("./app/models");
+
+require("./app/routes/jocdedaus.routes")(app);
 
 
-//ROUTERS
+db.sequelize.sync();
 
-const router = require('./routes/productRoutes');
-app.use('/api/products', router);
+//drop table if already exists
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and re-sync db.");
+// });
 
 
-//TESTING API
 
-app.get('/',(req, res) => {
-  res.json({message: 'hello from api'})
-})
+// simple route
+app.get('/', (req, res,) => {
+  res.json({msg: 'Aplicació Joc de Daus'})
+});
 
-//PORT 
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
 
-const PORT = process.env.PORT || 3306
-
-//SERVER
-
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`)
+app.listen(PORT, function () {
+  console.log(`Server running on port ${PORT}`)
 });
