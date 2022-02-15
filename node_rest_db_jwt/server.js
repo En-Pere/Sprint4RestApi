@@ -17,7 +17,7 @@ const db = require("./app/models");
 
 require("./app/routes/jocdedaus.routes")(app);
 
-
+//do not drop table
 db.sequelize.sync();
 
 //drop table if already exists
