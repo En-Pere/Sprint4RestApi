@@ -9,7 +9,10 @@ module.exports = app => {
   router.post("/post/players", jocdedaus.create);
 
   //edit player name
-  router.put("/put/players", jocdedaus.update)
+  router.put("/put/players/:name", jocdedaus.update)
+
+  //elimina tirades d'un jugador
+  router.put("/players/:id/games", jocdedaus.findOne)
 
 
   app.use('/api/jocdedaus', router);

@@ -1,3 +1,4 @@
+const { jocdedaus } = require("../models");
 const db = require("../models");
 const Jocdedaus = db.jocdedaus;
 const Op = db.Sequelize.Op;
@@ -38,16 +39,46 @@ exports.create = (req, res) => {
 
 //edit player by name
 exports.update = (req, res) => {
-  const id = req.params.id;
   const name = req.params.name;
   Jocdedaus.update(req.body, {
-    where: { id: id },
-    name: {name: name}
+    where: { name: name }
   })
-    .then(data => {
-      res.send(`El nombre ${name} se ha modificado con éxito`)
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Player updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update player with name=${name}.`
+        });
+      }
     })
     .catch(err => {
-      res.status(500).send
-    })
-}
+      res.status(500).send({
+        message: "Error updating player with name=" + name
+      });
+    });  
+};
+
+
+//-----> me quedo aquí
+// //elimina tirades d'un jugador
+// exports.findOne = (req, res) => {
+//   const id = req.params.id;
+//   const newGame = {
+//     id: id,
+//     game: req.body.game,
+//   };
+//   Jocdedaus.update(newGame)
+//     .then(data => {
+//       res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred while updating the game"
+//       });
+//     });  
+// };
+
