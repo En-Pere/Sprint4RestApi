@@ -6,13 +6,16 @@ module.exports = app => {
   router.get("/", jocdedaus.findAll);
 
   //post players
-  router.post("/post/players", jocdedaus.create);
+  router.post("/players", jocdedaus.create);
 
   //edit player name
-  router.put("/put/players/:name", jocdedaus.update)
+  router.put("/players/:name", jocdedaus.update)
+
+  //specific player makes a game
+  router.post("/players/games/:name", jocdedaus.updateGame)
 
   //elimina tirades d'un jugador
-  router.put("/players/:id/games", jocdedaus.findOne)
+  // router.put("/players/:id/games", jocdedaus.findOne)
 
 
   app.use('/api/jocdedaus', router);
