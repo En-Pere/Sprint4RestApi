@@ -45,7 +45,7 @@ exports.update = (req, res) => {
     where: { name: name }
   })
     .then(data => {
-      if (data) {
+      if (data >= 1) {
         res.send({
           message: "Player updated successfully."
         });
@@ -64,27 +64,65 @@ exports.update = (req, res) => {
 
 //specific player makes a game
 exports.updateGame = (req, res) => {
-  
+  const player = {
+    name: req.params.name,
+    game: req.body.game,
+    published: req.body.published ? req.body.published : false
+  };
+  Jocdedaus.create(player)
+    .then(data => {
+      res.send({
+        message: `new game ${req.body.game} created for ${req.params.name}`});
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+        err.message || 'ha ocurrido un error'
+      })
+    })
 };
 
+//elimina les tirades del jugador
+exports.deleteGame = (req, res) => {
+  const name = req.params.name;
+  Jocdedaus.destroy({
+    where: { name: name }
+  })
+    .then(num => {
+      if (num >= 1) {
+        res.send({
+          message: "Games were deleted successfully!"
+        });
+      } else {
+        res.send({
+          message: `Cannot delete games from player ${name}.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error"
+      });
+    });  
+};
 
-//-----> me quedo aquí
-// //elimina tirades d'un jugador
-// exports.findOne = (req, res) => {
-//   const id = req.params.id;
-//   const newGame = {
-//     id: id,
-//     game: req.body.game,
-//   };
-//   Jocdedaus.update(newGame)
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while updating the game"
-//       });
-//     });  
-// };
-
+exports.findPlayerGames = (req, res) => {
+  const name = req.params.name;
+  Jocdedaus.findAll({
+    where: { name: name }
+  })
+    .then(data => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find games for player ${name}`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: `Error retrieving player ${name}`
+      });
+    });  
+}

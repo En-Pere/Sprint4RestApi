@@ -14,8 +14,12 @@ module.exports = app => {
   //specific player makes a game
   router.post("/players/games/:name", jocdedaus.updateGame)
 
-  //elimina tirades d'un jugador
-  // router.put("/players/:id/games", jocdedaus.findOne)
+  //elimina les tirades del jugador
+  router.delete("/players/games/:name", jocdedaus.deleteGame)
+
+  //retorna el llistat de jugades per un jugador.
+  router.get("/players/games/:name", jocdedaus.findPlayerGames)
+
 
 
   app.use('/api/jocdedaus', router);
