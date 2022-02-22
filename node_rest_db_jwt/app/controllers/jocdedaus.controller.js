@@ -20,8 +20,10 @@ exports.findAll = (req, res) => {
 //create player
 exports.create = (req, res) => {
   const player = {
-    name: req.body.name,
+    name: req.body.name ? req.body.name : "Anonim",
     game: req.body.game,
+    dau1: req.body.dau1,
+    dau2: req.body.dau2,
     published: req.body.published ? req.body.published : false
   };
   //publish player in database
@@ -84,9 +86,9 @@ exports.updateGame = (req, res) => {
 
 //elimina les tirades del jugador
 exports.deleteGame = (req, res) => {
-  const name = req.params.name;
+  const id = req.params.id;
   Jocdedaus.destroy({
-    where: { name: name }
+    where: { id: id }
   })
     .then(num => {
       if (num >= 1) {
@@ -95,7 +97,7 @@ exports.deleteGame = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete games from player ${name}.`
+          message: `Cannot delete game ${id}.`
         });
       }
     })
@@ -126,3 +128,17 @@ exports.findPlayerGames = (req, res) => {
       });
     });  
 }
+
+// // Find all true
+// exports.findAllTrue = (req, res) => {
+//   Jocdedaus.findAll({ where: { published: true } })
+//     .then(data => {
+//       res.send(data);
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message:
+//           err.message || "Some error occurred"
+//       });
+//     });  
+// };
