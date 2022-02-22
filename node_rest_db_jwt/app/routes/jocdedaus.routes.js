@@ -20,8 +20,14 @@ module.exports = app => {
   //retorna el llistat de jugades per un jugador.
   router.get("/players/games/:name", jocdedaus.findPlayerGames)
 
-  //retorna tots els true
-  // router.get("/findalltrue", jocdedaus.findAllTrue)
+  //retorna tots els success
+  router.get("/findallsuccess", jocdedaus.findAllSuccess)
+
+  //retorna tots els success
+  router.get("/loser", jocdedaus.loser)
+
+  //retorna tots els success
+  router.get("/winner", jocdedaus.winner)
 
   app.use('/api/jocdedaus', router);
 };

@@ -1,6 +1,7 @@
 const { jocdedaus } = require("../models");
 const db = require("../models");
 const Jocdedaus = db.jocdedaus;
+const Op = db.Sequelize.Op;
 
 
 //find all players
@@ -24,6 +25,7 @@ exports.create = (req, res) => {
     game: req.body.game,
     dau1: req.body.dau1,
     dau2: req.body.dau2,
+    success: req.body.success,
     published: req.body.published ? req.body.published : false
   };
   //publish player in database
@@ -69,6 +71,9 @@ exports.updateGame = (req, res) => {
   const player = {
     name: req.params.name,
     game: req.body.game,
+    dau1: req.body.dau1,
+    dau2: req.body.dau2,
+    success: req.body.success,
     published: req.body.published ? req.body.published : false
   };
   Jocdedaus.create(player)
@@ -107,7 +112,7 @@ exports.deleteGame = (req, res) => {
       });
     });  
 };
-
+//retorna el llistat de jugades per un jugador.
 exports.findPlayerGames = (req, res) => {
   const name = req.params.name;
   Jocdedaus.findAll({
@@ -129,16 +134,58 @@ exports.findPlayerGames = (req, res) => {
     });  
 }
 
-// // Find all true
-// exports.findAllTrue = (req, res) => {
-//   Jocdedaus.findAll({ where: { published: true } })
-//     .then(data => {
-//       res.send(data);
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred"
-//       });
-//     });  
-// };
+// Find all success
+exports.findAllSuccess = (req, res) => {
+  Jocdedaus.findAll({
+    where: {
+      success: {
+        [Op.gte]: 1,
+      }
+    }
+})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred"
+      });
+    });  
+};
+
+// Find loser
+exports.loser = (req, res) => {
+  Jocdedaus.findOne({
+    order: [
+      ["success", "ASC"],
+    ],
+})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred"
+      });
+    });  
+};
+
+// Find winner
+exports.winner = (req, res) => {
+  Jocdedaus.findOne({
+    order: [
+      ["success", "DESC"],
+    ],
+})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred"
+      });
+    });  
+};

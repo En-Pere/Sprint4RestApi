@@ -12,6 +12,9 @@ module.exports = (sequelize, Sequelize) => {
     dau2: {
       type: Sequelize.INTEGER
     },
+    success: {
+      type: Sequelize.INTEGER
+    },
     published: {
       type: Sequelize.BOOLEAN
     }
