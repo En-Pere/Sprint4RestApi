@@ -1,10 +1,10 @@
 // module.exports = (sequelize, Sequelize) => {
-//   const user = sequelize.define("user", {
+//   const User = sequelize.define("users", {
 //     id: {
 //       type: Sequelize.STRING,
 //       primaryKey: true,
 //       autoincrement: true
-//   },
+//     },
 //     username: {
 //       type: Sequelize.STRING
 //     },
@@ -15,5 +15,5 @@
 //       type: Sequelize.STRING(150)
 //     },
 //   });
-//   return user;
+//   return User;
 // };
