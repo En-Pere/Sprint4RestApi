@@ -14,17 +14,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
+// const dbUser = require("./app/models");
+
 
 require("./app/routes/jocdedaus.routes")(app);
+// require("./app/routes/users.routes")(app);
 
 //do not drop table
 db.sequelize.sync();
+// dbUser.sequelize.sync();
 
-// drop table if already exists
+//drop table if already exists
 // db.sequelize.sync({ force: true })
 //   .then(() => {
 //     console.log("Drop and re-sync db.");
 //   });
+// dbUser.sequelize.sync({ force: true })
+// .then(() => {
+//   console.log("Drop and re-sync db.");
+// });
 
 
 // simple route
