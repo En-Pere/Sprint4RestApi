@@ -25,7 +25,7 @@ exports.create = (req, res) => {
     game: req.body.game,
     dau1: req.body.dau1,
     dau2: req.body.dau2,
-    success: req.body.success,
+    success_percentage: req.body.success_percentage,
     published: req.body.published ? req.body.published : false
   };
   //publish player in database
@@ -73,7 +73,7 @@ exports.updateGame = (req, res) => {
     game: req.body.game,
     dau1: req.body.dau1,
     dau2: req.body.dau2,
-    success: req.body.success,
+    success_percentage: req.body.success_percentage,
     published: req.body.published ? req.body.published : false
   };
   Jocdedaus.create(player)
@@ -134,31 +134,31 @@ exports.findPlayerGames = (req, res) => {
     });  
 }
 
-// Find all success
-exports.findAllSuccess = (req, res) => {
+//retorna percentatge mig d’èxits del conjunt de tots els jugadors
+exports.ranking = (req, res) => {
   Jocdedaus.findAll({
-    where: {
-      success: {
-        [Op.gte]: 1,
-      }
-    }
-})
-    .then(data => {
-      res.send(data);
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred"
-      });
-    });  
-};
+    where: {success_percentage: {[Op.gte]: 0}},
+    attributes: ["success_percentage","name"],
+    order: [
+      ["success_percentage", "DESC"]
+    ]
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred"
+    });
+  });  
+}
 
-// Find loser
+//retorna jugador amb pitjor % d'èxit
 exports.loser = (req, res) => {
   Jocdedaus.findOne({
     order: [
-      ["success", "ASC"],
+      ["success_percentage", "ASC"],
     ],
 })
     .then(data => {
@@ -172,11 +172,11 @@ exports.loser = (req, res) => {
     });  
 };
 
-// Find winner
+//retorna jugador amb millor % d'èxit
 exports.winner = (req, res) => {
   Jocdedaus.findOne({
     order: [
-      ["success", "DESC"],
+      ["success_percentage", "DESC"],
     ],
 })
     .then(data => {

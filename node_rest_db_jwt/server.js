@@ -27,7 +27,6 @@ db.sequelize.sync();
 //   });
 
 
-
 // simple route
 app.get('/', (req, res,) => {
   res.json({msg: 'Aplicació Joc de Daus'})

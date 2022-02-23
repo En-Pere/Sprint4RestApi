@@ -16,5 +16,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.jocdedaus = require("./jocdedaus.model.js")(sequelize, Sequelize);
+// db.jocdedaus = require("./users.model.js")(sequelize, Sequelize);
 
 module.exports = db;

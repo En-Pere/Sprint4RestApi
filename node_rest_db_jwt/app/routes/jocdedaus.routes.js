@@ -20,13 +20,13 @@ module.exports = app => {
   //retorna el llistat de jugades per un jugador.
   router.get("/players/games/:name", jocdedaus.findPlayerGames)
 
-  //retorna tots els success
-  router.get("/findallsuccess", jocdedaus.findAllSuccess)
+  //retorna percentatge mig d’èxits del conjunt de tots els jugadors
+  router.get("/ranking", jocdedaus.ranking)
 
-  //retorna tots els success
+  //retorna jugador amb pitjor % d'èxit
   router.get("/loser", jocdedaus.loser)
 
-  //retorna tots els success
+  //retorna jugador amb millor % d'èxit
   router.get("/winner", jocdedaus.winner)
 
   app.use('/api/jocdedaus', router);

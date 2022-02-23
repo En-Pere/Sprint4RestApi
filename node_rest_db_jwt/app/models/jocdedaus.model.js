@@ -12,7 +12,7 @@ module.exports = (sequelize, Sequelize) => {
     dau2: {
       type: Sequelize.INTEGER
     },
-    success: {
+    success_percentage: {
       type: Sequelize.INTEGER
     },
     published: {
