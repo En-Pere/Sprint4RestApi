@@ -1,33 +1,33 @@
-module.exports = app => {
-  const jocdedaus = require("../controllers/jocdedaus.controller.js");
-  var router = require("express").Router();
+// module.exports = app => {
+//   const jocdedaus = require("../controllers/jocdedaus.controller.js");
+//   var router = require("express").Router();
 
-  //find all
-  router.get("/", jocdedaus.findAll);
+//   //find all
+//   router.get("/", jocdedaus.findAll);
 
-  //post players
-  router.post("/players", jocdedaus.create);
+//   //post players
+//   router.post("/players", jocdedaus.create);
 
-  //edit player name
-  router.put("/players/:name", jocdedaus.update)
+//   //edit player name
+//   router.put("/players/:name", jocdedaus.update)
 
-  //specific player makes a game
-  router.post("/players/games/:name", jocdedaus.updateGame)
+//   //specific player makes a game
+//   router.post("/players/games/:name", jocdedaus.updateGame)
 
-  //elimina les tirades del jugador
-  router.delete("/players/games/:id", jocdedaus.deleteGame)
+//   //elimina les tirades del jugador
+//   router.delete("/players/games/:id", jocdedaus.deleteGame)
 
-  //retorna el llistat de jugades per un jugador.
-  router.get("/players/games/:name", jocdedaus.findPlayerGames)
+//   //retorna el llistat de jugades per un jugador.
+//   router.get("/players/games/:name", jocdedaus.findPlayerGames)
 
-  //retorna percentatge mig d’èxits del conjunt de tots els jugadors
-  router.get("/ranking", jocdedaus.ranking)
+//   //retorna percentatge mig d’èxits del conjunt de tots els jugadors
+//   router.get("/ranking", jocdedaus.ranking)
 
-  //retorna jugador amb pitjor % d'èxit
-  router.get("/loser", jocdedaus.loser)
+//   //retorna jugador amb pitjor % d'èxit
+//   router.get("/loser", jocdedaus.loser)
 
-  //retorna jugador amb millor % d'èxit
-  router.get("/winner", jocdedaus.winner)
+//   //retorna jugador amb millor % d'èxit
+//   router.get("/winner", jocdedaus.winner)
 
-  app.use('/api/jocdedaus', router);
-};
+//   app.use('/api/jocdedaus', router);
+// };
