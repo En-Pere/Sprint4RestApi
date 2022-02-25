@@ -4,13 +4,13 @@ const multer = require('multer');
 
 const reqUser = (req,res) => {
   res.json({
-    nom: 'pere',
+    nom: 'pere ruiz',
     edat: '37',
     urlpeticio: 'http://localhost:8000/user'
   })
 };
 
-//creamos la variable upload, con multer para definir dónde guardaremos las imagenes y filtramos x tipo de imagen
+//creamos la variable upload. Multer para definir dónde guardaremos las imagenes y filtramos x tipo de imagen
 const upload = multer({
   dest: './imagenes',
   fileFilter: function (req, file, cb) {
