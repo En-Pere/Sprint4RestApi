@@ -1,6 +1,9 @@
 const Sequelize = require("sequelize");
+
 const dbdata = require("./dbdata");
+
 const jocdedausmodel = require("../models/jocdedausmodel")
+const usermodel = require("../models/usermodel");
 
 
 const sequelize = new Sequelize(dbdata.DB, dbdata.USER, dbdata.PASSWORD, {
@@ -9,6 +12,7 @@ const sequelize = new Sequelize(dbdata.DB, dbdata.USER, dbdata.PASSWORD, {
 });
 
 const Joc = jocdedausmodel(sequelize, Sequelize);
+const User = usermodel(sequelize, Sequelize);
 
 sequelize.sync({ force: false})
   .then(() => {
@@ -16,6 +20,7 @@ sequelize.sync({ force: false})
   });
 
 module.exports = {
-  Joc
+  Joc,
+  User
 };
 
