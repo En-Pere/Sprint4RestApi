@@ -1,6 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const apiRouter = require("./app/routes/api");
+
 const app = express();
 
 require("./app/config/dbconfig")
@@ -11,11 +13,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 
+app.use('/api', apiRouter)
 
-//test server
-app.get('/', (req, res,) => {
-  res.send('Todo funcionando OK')
-});
 
 app.listen(8080, () => {
   console.log(`Server running on port 8080`)
