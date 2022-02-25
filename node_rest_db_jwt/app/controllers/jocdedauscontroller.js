@@ -1,12 +1,9 @@
-const { jocdedaus } = require("../models");
-const db = require("../models");
-const Jocdedaus = db.jocdedaus;
-const Op = db.Sequelize.Op;
-
+const { Joc } = require("../config/dbconfig");
+const { Op } = require("sequelize");
 
 //find all players
-exports.findAll = (req, res) => {
-  Jocdedaus.findAll()
+findAll = (req, res) => {
+  Joc.findAll()
     .then(data => {
       res.send(data);
     })
@@ -19,17 +16,17 @@ exports.findAll = (req, res) => {
 };
 
 //create player
-exports.create = (req, res) => {
+create = (req, res) => {
   const player = {
+    id: req.body.id,
     name: req.body.name ? req.body.name : "Anonim",
     game: req.body.game,
     dau1: req.body.dau1,
     dau2: req.body.dau2,
-    success_percentage: req.body.success_percentage,
-    published: req.body.published ? req.body.published : false
+    success_percentage: req.body.success_percentage
   };
   //publish player in database
-  Jocdedaus.create(player)
+  Joc.create(player)
     .then(data => {
       res.send({
         message: "nuevo jugador creado: " + req.body.name});
@@ -43,9 +40,9 @@ exports.create = (req, res) => {
 };
 
 //edit player by name
-exports.update = (req, res) => {
+update = (req, res) => {
   const name = req.params.name;
-  Jocdedaus.update(req.body, {
+  Joc.update(req.body, {
     where: { name: name }
   })
     .then(data => {
@@ -67,16 +64,16 @@ exports.update = (req, res) => {
 };
 
 //specific player makes a game
-exports.updateGame = (req, res) => {
+updateGame = (req, res) => {
   const player = {
+    id: req.body.id,
     name: req.params.name,
     game: req.body.game,
     dau1: req.body.dau1,
     dau2: req.body.dau2,
     success_percentage: req.body.success_percentage,
-    published: req.body.published ? req.body.published : false
   };
-  Jocdedaus.create(player)
+  Joc.create(player)
     .then(data => {
       res.send({
         message: `new game ${req.body.game} created for ${req.params.name}`});
@@ -90,9 +87,9 @@ exports.updateGame = (req, res) => {
 };
 
 //elimina les tirades del jugador
-exports.deleteGame = (req, res) => {
+deleteGame = (req, res) => {
   const id = req.params.id;
-  Jocdedaus.destroy({
+  Joc.destroy({
     where: { id: id }
   })
     .then(num => {
@@ -112,10 +109,11 @@ exports.deleteGame = (req, res) => {
       });
     });  
 };
+
 //retorna el llistat de jugades per un jugador.
-exports.findPlayerGames = (req, res) => {
+findPlayerGames = (req, res) => {
   const name = req.params.name;
-  Jocdedaus.findAll({
+  Joc.findAll({
     where: { name: name }
   })
     .then(data => {
@@ -135,8 +133,8 @@ exports.findPlayerGames = (req, res) => {
 }
 
 //retorna percentatge mig d’èxits del conjunt de tots els jugadors
-exports.ranking = (req, res) => {
-  Jocdedaus.findAll({
+ranking = (req, res) => {
+  Joc.findAll({
     where: {success_percentage: {[Op.gte]: 0}},
     attributes: ["success_percentage","name"],
     order: [
@@ -155,8 +153,8 @@ exports.ranking = (req, res) => {
 }
 
 //retorna jugador amb pitjor % d'èxit
-exports.loser = (req, res) => {
-  Jocdedaus.findOne({
+loser = (req, res) => {
+  Joc.findOne({
     order: [
       ["success_percentage", "ASC"],
     ],
@@ -173,8 +171,8 @@ exports.loser = (req, res) => {
 };
 
 //retorna jugador amb millor % d'èxit
-exports.winner = (req, res) => {
-  Jocdedaus.findOne({
+winner = (req, res) => {
+  Joc.findOne({
     order: [
       ["success_percentage", "DESC"],
     ],
@@ -189,3 +187,16 @@ exports.winner = (req, res) => {
       });
     });  
 };
+
+
+module.exports = {
+  findAll,
+  create,
+  update,
+  updateGame,
+  deleteGame,
+  findPlayerGames,
+  ranking,
+  loser,
+  winner
+}
