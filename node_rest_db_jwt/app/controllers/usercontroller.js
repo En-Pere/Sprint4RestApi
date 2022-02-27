@@ -1,5 +1,7 @@
 const { User } = require("../config/dbconfig");
 const bcrypt = require("bcryptjs");
+const moment = require("moment");
+const jwt = require("jwt-simple");
 
 
 //register
@@ -50,7 +52,7 @@ login = (req, res) => {
     if(data){
       const checkPass = bcrypt.compareSync(req.body.password, data.password)
         if(checkPass) {
-          res.json({message: "todo ok"});
+          res.json({message: createToken(data)});
         } else {
           res.json({message: "error password"});
         }
@@ -66,28 +68,16 @@ login = (req, res) => {
   });  
 }
 
-// update = (req, res) => {
-//   const name = req.params.name;
-//   Joc.update(req.body, {
-//     where: { name: name }
-//   })
-//     .then(data => {
-//       if (data >= 1) {
-//         res.send({
-//           message: "Player updated successfully."
-//         });
-//       } else {
-//         res.send({
-//           message: `Cannot update player with name: ${name}.`
-//         });
-//       }
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: `Error updating player with name: ${name}.`
-//       });
-//     });  
-// };
+const createToken = (user) => {
+  const payLoad = {
+    usuarioId: user.id,
+    createdAt: moment().unix(),
+    expiredAt: moment().add(5, 'minutes').unix()
+  }
+  return jwt.encode(payLoad, "frase")
+};
+
+
 
 module.exports = {
   register,
