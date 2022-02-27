@@ -1,67 +1,97 @@
-// const { User } = require("../config/dbconfig");
-// const bcrypt = require("bcryptjs");
+const { User } = require("../config/dbconfig");
+const bcrypt = require("bcryptjs");
 
 
-// //register
-// register = (req, res) => {
-//   req.body.password = bcrypt.hashSync(req.body.password, 10);
-//   const user = User.create(req.body);
-    
-// };
-
-// // create = (req, res) => {
-// //   const player = {
-// //     id: req.body.id,
-// //     name: req.body.name ? req.body.name : "Anonim",
-// //     game: req.body.game,
-// //     dau1: req.body.dau1,
-// //     dau2: req.body.dau2,
-// //     success_percentage: req.body.success_percentage
-// //   };
-// //   //publish player in database
-// //   Joc.create(player)
-// //     .then(data => {
-// //       res.send({
-// //         message: "nuevo jugador creado: " + req.body.name});
-// //     })
-// //     .catch(err => {
-// //       res.status(500).send({
-// //         message:
-// //         err.message || 'ha ocurrido un error'
-// //       })
-// //     })
-// // };
+//register
+register = (req, res) => {
+  req.body.password = bcrypt.hashSync(req.body.password, 10);
+  const encryptedPass = req.body.password;
+  const user = {
+    username: req.body.username,
+    email: req.body.email,
+    password: encryptedPass
+  }
+  User.create(user)
+      .then(data => {
+      res.send(data);
+     })
+    .catch(err => {
+      res.status(500).send({
+        message:
+        err.message || 'ha ocurrido un error'
+      })
+    })
+};
 
 
-// //find all users
-// findAllusers = (req, res) => {
-//   User.findAll()
+//find all users
+findAllusers = (req, res) => {
+  User.findAll()
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving names."
+      });
+    });  
+};
+
+login = (req, res) => {
+  const mail = req.body.email;
+  const user = req.body.username;
+  //const pass = req.body.password
+  
+  User.findOne({
+    where: {email: mail, username: user}
+  })
+  .then(data => {
+    if(data){
+      const checkPass = bcrypt.compareSync(req.body.password, data.password)
+        if(checkPass) {
+          res.json({message: "todo ok"});
+        } else {
+          res.json({message: "error password"});
+        }
+    } else {
+      res.send({error: "error usuario o contraseña"})
+    }
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving names."
+    });
+  });  
+}
+
+// update = (req, res) => {
+//   const name = req.params.name;
+//   Joc.update(req.body, {
+//     where: { name: name }
+//   })
 //     .then(data => {
-//       res.send(data);
+//       if (data >= 1) {
+//         res.send({
+//           message: "Player updated successfully."
+//         });
+//       } else {
+//         res.send({
+//           message: `Cannot update player with name: ${name}.`
+//         });
+//       }
 //     })
 //     .catch(err => {
 //       res.status(500).send({
-//         message:
-//           err.message || "Some error occurred while retrieving names."
+//         message: `Error updating player with name: ${name}.`
 //       });
 //     });  
 // };
 
-// module.exports = {
-//   register,
-//   findAllusers
-// }
+module.exports = {
+  register,
+  findAllusers,
+  login
+};
 
-// //register
-// // findAll = (req, res) => {
-// //   Joc.findAll()
-// //     .then(data => {
-// //       res.send(data);
-// //     })
-// //     .catch(err => {
-// //       res.status(500).send({
-// //         message:
-// //           err.message || "Some error occurred while retrieving names."
-// //       });
-// //     });  
-// // };

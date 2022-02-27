@@ -14,10 +14,17 @@ const sequelize = new Sequelize(dbdata.DB, dbdata.USER, dbdata.PASSWORD, {
 const Joc = jocdedausmodel(sequelize, Sequelize);
 const User = usermodel(sequelize, Sequelize);
 
+//CREATE TABLE IF NOT EXISTS
 sequelize.sync({ force: false})
   .then(() => {
     console.log("Tablas sincronizadas")
   });
+
+//DROP ALL TABLES
+// sequelize.drop()
+// .then(() => {
+//   console.log("Tablas eliminadas")
+// });
 
 module.exports = {
   Joc,
