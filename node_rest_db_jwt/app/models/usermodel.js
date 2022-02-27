@@ -12,7 +12,7 @@ module.exports = (sequelize, type) => {
       type: type.STRING
     },
     password: {
-      type: type.INTEGER
+      type: type.STRING(150)
     },
   })
 };
