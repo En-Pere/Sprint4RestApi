@@ -14,7 +14,7 @@ router.put("/players/:name", jocControllers.update)
 router.post("/players/games/:name", jocControllers.updateGame)
 
 //elimina les tirades del jugador
-router.delete("/players/games/:id", jocControllers.deleteGame)
+router.delete("/players/games/:name", jocControllers.deleteGame)
 
 //retorna el llistat de jugades per un jugador.
 router.get("/players/games/:name", jocControllers.findPlayerGames)

@@ -1,10 +1,10 @@
 module.exports = (sequelize, type) => {
   return sequelize.define('taulajoc', {
-    id: {
-      type: type.INTEGER,
-      primaryKey: true,
-      autoincrement: true,
-    },
+    // id: {
+    //   type: type.INTEGER,
+    //   primaryKey: true,
+    //   autoincrement: true,
+    // },
     name: {
       type: type.STRING,
     },
@@ -18,7 +18,7 @@ module.exports = (sequelize, type) => {
       type: type.INTEGER
     },
     success_percentage: {
-      type: type.INTEGER
+      type: type.STRING
     },
   })
 };

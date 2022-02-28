@@ -1,6 +1,8 @@
 const { Joc } = require("../config/dbconfig");
 const { Op } = require("sequelize");
 
+
+
 //find all players
 findAll = (req, res) => {
   Joc.findAll()
@@ -15,15 +17,28 @@ findAll = (req, res) => {
     });  
 };
 
-//create player
+// const jugadas = () => {
+//   Joc.findAndCountAll({
+//     where: { name: "toni" }
+//   })
+//     .then(data => {
+//       console.log(data.count)
+//     })
+//     .catch(error => {
+//       throw error
+//     })
+// }
+// console.log(jugadas());
+
 create = (req, res) => {
+  const percent = 'Aquí irá el % de acierto';
   const player = {
-    id: req.body.id,
+    //id: req.body.id,
     name: req.body.name ? req.body.name : "Anonim",
     game: req.body.game,
     dau1: req.body.dau1,
     dau2: req.body.dau2,
-    success_percentage: req.body.success_percentage
+    success_percentage: percent
   };
   //publish player in database
   Joc.create(player)
@@ -38,6 +53,7 @@ create = (req, res) => {
       })
     })
 };
+
 
 //edit player by name
 update = (req, res) => {
@@ -88,9 +104,9 @@ updateGame = (req, res) => {
 
 //elimina les tirades del jugador
 deleteGame = (req, res) => {
-  const id = req.params.id;
+  const name = req.params.name;
   Joc.destroy({
-    where: { id: id }
+    where: { name: name }
   })
     .then(num => {
       if (num >= 1) {
@@ -99,7 +115,7 @@ deleteGame = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete game ${id}.`
+          message: `Cannot delete game for ${name}.`
         });
       }
     })
