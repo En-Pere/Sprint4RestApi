@@ -72,11 +72,10 @@ const createToken = (user) => {
   const payLoad = {
     usuarioId: user.id,
     createdAt: moment().unix(),
-    expiredAt: moment().add(5, 'minutes').unix()
+    expiredAt: moment().add(5, 'hours').unix()
   }
   return jwt.encode(payLoad, "frase")
 };
-
 
 
 module.exports = {

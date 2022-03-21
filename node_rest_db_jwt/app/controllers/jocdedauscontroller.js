@@ -1,5 +1,7 @@
 const { Joc } = require("../config/dbconfig");
 const { Op } = require("sequelize");
+//const { resultado, dau2 } = require("..//models/logicadaus")
+const {sequelize} = require("../models/jocdedausmodel")
 
 
 
@@ -17,34 +19,18 @@ findAll = (req, res) => {
     });  
 };
 
-// const jugadas = () => {
-//   Joc.findAndCountAll({
-//     where: { name: "toni" }
-//   })
-//     .then(data => {
-//       console.log(data.count)
-//     })
-//     .catch(error => {
-//       throw error
-//     })
-// }
-// console.log(jugadas());
 
-create = (req, res) => {
-  const percent = 'Aquí irá el % de acierto';
+//create player
+create =  (req, res) => {
   const player = {
-    //id: req.body.id,
-    name: req.body.name ? req.body.name : "Anonim",
-    game: req.body.game,
-    dau1: req.body.dau1,
-    dau2: req.body.dau2,
-    success_percentage: percent
-  };
-  //publish player in database
-  Joc.create(player)
+      name: req.body.name ? req.body.name : "Anonim",
+    };
+    //publish player in database
+    Joc.create(player)
     .then(data => {
       res.send({
-        message: "nuevo jugador creado: " + req.body.name});
+        message: "nuevo jugador creado"
+      })
     })
     .catch(err => {
       res.status(500).send({
@@ -53,6 +39,7 @@ create = (req, res) => {
       })
     })
 };
+
 
 
 //edit player by name
@@ -81,18 +68,51 @@ update = (req, res) => {
 
 //specific player makes a game
 updateGame = (req, res) => {
+
+  const dauA = () => {
+    const dau1 = Math.floor(6*Math.random()) + 1;
+    return dau1;
+  };
+  const dau1 = dauA();
+
+  const dauB = () => {
+    const dau2 = Math.floor(6*Math.random()) + 1;
+    return dau2;
+  };
+  const dau2 = dauB();
+  
+  const elJuego = () => {
+    if (dau1 + dau2 == 7) {
+      return "win"
+    } else {
+      return "loose"
+    }
+  };
+  const winLose = elJuego();
+
+  // const jugadas = () => {
+  //   const name = req.params.name;
+  //   Joc.update(req.body, {
+  //   where: { game: name }
+  //   })
+  // }
+  // const jugadasTotales = jugadas(); 
+  
   const player = {
-    id: req.body.id,
+    //id: req.body.id,
     name: req.params.name,
-    game: req.body.game,
-    dau1: req.body.dau1,
-    dau2: req.body.dau2,
-    success_percentage: req.body.success_percentage,
+    tiradas: {dau1, dau2, winLose},
+    //game: {jugadasTotales},
+    //success_percentage: {todoJugadas},
   };
   Joc.create(player)
     .then(data => {
       res.send({
-        message: `new game ${req.body.game} created for ${req.params.name}`});
+        dau1: player.tiradas.dau1,
+        dau2: player.tiradas.dau2,
+        WinLose: player.tiradas.winLose,
+        //Jugadas_totales: player.tiradas.jugadasTotales
+      })
     })
     .catch(err => {
       res.status(500).send({

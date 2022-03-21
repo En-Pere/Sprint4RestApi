@@ -7,18 +7,24 @@ module.exports = (sequelize, type) => {
     // },
     name: {
       type: type.STRING,
+      unque: true,
+      allowNull: false
+    },
+    tiradas: {
+      type: type.JSON,
+      defaultValue: 0
     },
     game: {
-      type: type.STRING
+      type: type.INTEGER,
+      defaultValue: 0
     },
-    dau1: {
-      type: type.INTEGER
-    },
-    dau2: {
-      type: type.INTEGER
-    },
+    // dau2: {
+    //   type: type.JSON,
+    //   defaultValue: 0
+    // },
     success_percentage: {
-      type: type.STRING
+      type: type.INTEGER,
+      defaultValue: 0
     },
   })
 };
